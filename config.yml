@@ -1,0 +1,23 @@
+# Bot token
+token: 'token here'
+
+# PostgreSQL database
+database:
+    # IP address
+    ip: myhost.com
+    
+    # Database
+    database: mydatabase
+    
+    # Password
+    password: secret123321
+    
+    # Port
+    port: 5432
+    
+    # User
+    username: myuser
+    
+    # Tables
+    tables:
+        users: users

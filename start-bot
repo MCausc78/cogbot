@@ -1,0 +1,7 @@
+#!/bin/bash
+if ./tool; then
+	cd ..
+	./bot/bin/main
+else
+	echo "Build failed :("
+fi
