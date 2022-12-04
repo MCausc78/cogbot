@@ -14,6 +14,7 @@
 #include "cogbot/commands/pay.hpp"
 #include "cogbot/commands/eval.hpp"
 #include "cogbot/data/database.hpp"
+#include "cogbot/listener/join.hpp"
 
 #include <fmt/core.h>
 #include <stdexcept>
@@ -178,23 +179,27 @@ int cogbot::application::run() {
 	));
 	pqxx::work txn(conn);
 	
+	conn.prepare("cxx_get_balance", cogbot::data::database::GET_BALANCE);
+	conn.prepare("cxx_insert_balance", cogbot::data::database::INSERT_BALANCE);
+	conn.prepare("cxx_set_balance", cogbot::data::database::SET_BALANCE);
+	
 	cogbot::conn = &conn;
 	cogbot::txn = &txn;
 	
 	// discord api
-	dpp::cluster bot(config["token"].as<std::string>());
+	dpp::cluster bot(config["token"].as<std::string>(), dpp::i_default_intents | dpp::i_guild_members);
 	bot.on_log(dpp::utility::cout_logger());
 	cogbot::bot = &bot;
 	std::cout << "Starting bot..." << std::endl;
 	bot.on_slashcommand([](const dpp::slashcommand_t& event) {
 		try {
 			cogbot::cmds.at(event.command.get_command_name()).callback.operator()(event);
-		} catch(std::out_of_range oor) {
+		} catch(std::out_of_range& oor) {
 			dpp::embed e = dpp::embed().
 				set_color(dpp::colors::red).
 				set_title("Ошибка").
 				set_description(fmt::format(
-					"{}",
+					"Команда не найдена (std::out_of_range, {})",
 					oor.what()
 				));
 			event.reply(dpp::message(
@@ -202,6 +207,7 @@ int cogbot::application::run() {
 			).set_reference(event.command.msg.id));
 		}
 	});
+	bot.on_guild_member_add(cogbot::listener::event_join_exec);
 	bot.on_ready([&bot](const dpp::ready_t& event) {
 		std::cout << "Bot started" << std::endl;
 		if(dpp::run_once<struct register_bot_commands>()) {

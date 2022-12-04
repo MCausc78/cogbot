@@ -34,13 +34,13 @@ do
 	execc "$CXX $CXXFLAGS -o obj/$f.o src/cpp/$f"
 done
 
-for af in $ASMFILES
+for f in $ASMFILES
 do
-	DIR="$(dirname obj/$af.o)"
+	DIR="$(dirname obj/$f.o)"
 	if [ ! -d $DIR ]; then
 		mkdir -p "$DIR"
 	fi
-	execc "$AS $ASFLAGS -o obj/$af.o src/asm/$af"
+	execc "$AS $ASFLAGS -o obj/$f.o src/asm/$f"
 done
 
 execc "$LD -o bin/main obj/**/**.o $LDFLAGS"

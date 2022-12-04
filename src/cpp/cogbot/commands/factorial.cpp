@@ -9,11 +9,11 @@
 namespace cogbot::commands {
 	void factorial_exec(const dpp::slashcommand_t& event) {
 		std::string ns = std::get<std::string>(event.get_parameter("n"));
-		long long n = 0L;
+		long double n = 0.0L;
 		dpp::embed e;
 		e.set_color(dpp::colors::red);
 		try {
-			n = std::stoll(ns);
+			n = std::stold(ns);
 		} catch(std::invalid_argument const& ex) {
 			e.
 				set_title("Ошибка парсинга").
@@ -39,11 +39,11 @@ namespace cogbot::commands {
 			);
 			return;
 		}
-		if(n < 0 || n > 65) {
+		if(n < 0 || n > 170) {
 			e.
 				set_title("Ошибка").
 				set_description(
-					"Выход за пределы диапазона! Доступные значения: от 0 до 65."
+					"Выход за пределы диапазона! Доступные значения: от 0 до 170."
 				);
 			event.reply(
 				dpp::message(
@@ -55,7 +55,7 @@ namespace cogbot::commands {
 				set_color(dpp::colors::green).
 				set_title("Факториал был вычислен!").
 				set_description(
-					fmt::format("{}! = {}\n", n, cogbot::util::math::factorial( static_cast<uint64_t>(n) ))
+					fmt::format("{}! = {}\n", n, cogbot::util::math::factorial_stl(n))
 				);
 			event.reply(
 				dpp::message(

@@ -21,3 +21,9 @@ database:
     # Tables
     tables:
         users: users
+
+# Bot
+bot:
+    # Autorole
+    autorole:
+        my_server_id: 'my_role_id'

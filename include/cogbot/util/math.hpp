@@ -1,8 +1,6 @@
 #ifndef CXX_COGBOT_UTIL_MATH_HPP
 #define CXX_COGBOT_UTIL_MATH_HPP 1
 
-#include <cstdint>
-
 /**
  *
  * @file math.hpp
@@ -18,7 +16,7 @@ namespace cogbot::util::math {
 		 * @param n число
 		 *
 		 */
-		uint64_t factorial(uint64_t);
+		unsigned long long factorial_asm(unsigned long long);
 		/**
 		 *
 		 * Вычислить число Фибоначчи.
@@ -26,8 +24,33 @@ namespace cogbot::util::math {
 		 * @param n число
 		 *
 		 */
-		uint64_t fibonacci(uint64_t);
+		unsigned long long fibonacci(unsigned long long);
 	}
+	/**
+	 *
+	 * Вычислить факториал числа, используя STL.
+	 *
+	 * @param n число
+	 *
+	 */
+	long long factorial_stl(long long);
+	/**
+	 *
+	 * Вычислить факториал числа, используя STL.
+	 *
+	 * @param n число
+	 *
+	 */
+	unsigned long long factorial_stl(unsigned long long);
+	/**
+	 *
+	 * Вычислить факториал числа, используя STL.
+	 *
+	 * @param n число
+	 *
+	 */
+	long double factorial_stl(long double);
+
 }
 
 #endif /* CXX_COGBOT_UTIL_MATH_HPP */

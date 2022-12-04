@@ -1,6 +1,8 @@
 section .text
 	global fibonacci
 fibonacci:
+	cmp rdi, 2
+	jb .L3
 	mov rax, 1
 	mov rbx, 1
 	mov rcx, 3
@@ -14,4 +16,7 @@ fibonacci:
 	cmp rcx, rdi
 	jbe .L1
 	mov rax, rbx
+	ret
+.L3:
+	mov rax, rdi
 	ret

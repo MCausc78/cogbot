@@ -20,15 +20,9 @@ namespace cogbot::data {
 		
 	}
 	long double user::get_balance() {
-		cogbot::conn->prepare(
-			"cxx_get_balance",
-			cogbot::data::database::GET_BALANCE);
 		pqxx::result res = cogbot::txn->exec_prepared("cxx_get_balance",
 			cogbot::util::snowflake::snowflake_to_string(this->id));
 		if(res.empty()) {
-			cogbot::conn->prepare(
-				"cxx_insert_balance",
-				cogbot::data::database::INSERT_BALANCE);
 			pqxx::result res = cogbot::txn->exec_prepared("cxx_insert_balance",
 				cogbot::util::snowflake::snowflake_to_string(this->id),
 				0.0);
@@ -40,9 +34,6 @@ namespace cogbot::data {
 	}
 	user& user::set_balance(long double n) {
 		(void)get_balance();
-		cogbot::conn->prepare(
-			"cxx_set_balance",
-			cogbot::data::database::SET_BALANCE);
 		cogbot::txn->exec_prepared("cxx_set_balance",
 			n,
 			cogbot::util::snowflake::snowflake_to_string(this->id));
